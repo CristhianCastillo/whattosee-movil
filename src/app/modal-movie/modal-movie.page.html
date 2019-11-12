@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="dark" (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+      <ion-title *ngIf="movieInfo">Nombre de Pelicula:: {{movieInfo.name}}</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="movieInfo">
+    <img src="../../assets/images/clapperboard.png" />
+    <ion-card-header>
+      <ion-card-subtitle>Clasificación: {{movieInfo.classificationEntity.name}}</ion-card-subtitle>
+      <ion-card-title>{{movieInfo.name}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          Actores
+          <ion-col *ngFor="let actor of movieInfo.actorList">
+            <ion-chip>
+              <ion-avatar>
+                <img
+                  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjYzVkYmZmIiBkPSJNMCAwaDUxMnY1MTJIMHoiLz48cGF0aCBkPSJNMjU2IDMwNGM2MS42IDAgMTEyLTUwLjQgMTEyLTExMlMzMTcuNiA4MCAyNTYgODBzLTExMiA1MC40LTExMiAxMTIgNTAuNCAxMTIgMTEyIDExMnptMCA0MGMtNzQuMiAwLTIyNCAzNy44LTIyNCAxMTJ2NTZoNDQ4di01NmMwLTc0LjItMTQ5LjgtMTEyLTIyNC0xMTJ6IiBmaWxsPSIjODJhZWZmIi8+PC9zdmc+" />
+              </ion-avatar>
+              <ion-label>{{actor.name}}, Pais: {{actor.country}}</ion-label>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          Directores
+          <ion-col *ngFor="let director of movieInfo.productorList">
+            <ion-chip>
+              <ion-avatar>
+                <img
+                  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjYzVkYmZmIiBkPSJNMCAwaDUxMnY1MTJIMHoiLz48cGF0aCBkPSJNMjU2IDMwNGM2MS42IDAgMTEyLTUwLjQgMTEyLTExMlMzMTcuNiA4MCAyNTYgODBzLTExMiA1MC40LTExMiAxMTIgNTAuNCAxMTIgMTEyIDExMnptMCA0MGMtNzQuMiAwLTIyNCAzNy44LTIyNCAxMTJ2NTZoNDQ4di01NmMwLTc0LjItMTQ5LjgtMTEyLTIyNC0xMTJ6IiBmaWxsPSIjODJhZWZmIi8+PC9zdmc+" />
+              </ion-avatar>
+              <ion-label>{{director.name}}, Pais: {{director.country}}</ion-label>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          Calificación
+          <ion-col>
+            <ion-chip>
+              <ion-label>{{getScoreMovie(movieInfo.score, movieInfo.scoreCounter)}}</ion-label>
+            </ion-chip>
+          </ion-col>
+          <ion-button (click)="scoreMovie()" color="success">Calificar Pelicula</ion-button>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+  <ion-list-header>Comentarios</ion-list-header>
+  <ion-item *ngIf="movieInfo">
+    <ion-label>Cantidad</ion-label>
+    <ion-note slot="end">{{movieInfo.commentEntityList.length}}</ion-note>
+  </ion-item>
+  <div *ngIf="movieInfo">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+        refreshingText="Refreshing..."></ion-refresher-content>
+    </ion-refresher>
+    <ion-card *ngFor="let comment of movieInfo.commentEntityList">
+      <ion-card-header>
+        <ion-card-subtitle>{{comment.creation}}</ion-card-subtitle>
+        <ion-card-title>{{comment.userEntity.userName}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{comment.description}}
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-content>
+        <ion-button (click)="sendComment()" expand="block">Agregar Comentario</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

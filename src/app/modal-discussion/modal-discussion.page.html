@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="dark" (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+      <ion-title *ngIf="discussion">{{discussion.name}}</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="discussion">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+        refreshingText="Refreshing..."></ion-refresher-content>
+    </ion-refresher>
+    <ion-card *ngFor="let comment of discussion.commentDiscussionEntityList">
+      <ion-card-header>
+        <ion-card-subtitle>{{comment.creation}}</ion-card-subtitle>
+        <ion-card-title>{{comment.userEntity.userName}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{comment.description}}
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-content>
+        <ion-button (click)="sendComment()" expand="block">Agregar Comentario</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

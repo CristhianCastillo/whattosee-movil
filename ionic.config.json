@@ -1,5 +1,7 @@
 {
   "name": "whattosee-movil",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
