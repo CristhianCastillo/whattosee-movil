@@ -14,6 +14,29 @@ export class Tab2Page {
   constructor(public alertController: AlertController,
     private router: Router, private movieService: MovieService, public loadingCtrl: LoadingController) { }
 
+  doRefresh(event) {
+    this.loadingCtrl.create({
+      message: "Cargando categorias..."
+    }).then(a => {
+      a.present();
+      this.movieService.getMoviGenders().subscribe((result: any) => {
+        event.target.complete();
+        a.dismiss();
+        if (result.status === "00") {
+          this.movies = result.result;
+        } else {
+          this.showErrorAlert(result.result);
+        }
+      },
+        (err) => {
+          event.target.complete();
+          a.dismiss();
+          console.log(err.message);
+          this.showErrorAlert(err.message);
+        });
+    });
+  }
+
 
   goToMovies(id: number) {
     let navigationExtras: NavigationExtras = {
